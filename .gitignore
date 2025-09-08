@@ -1,0 +1,36 @@
+# 🚫 Archivos de sistema/editor
+.vscode/
+__pycache__/
+.ipynb_checkpoints/
+*.log
+
+# 🚫 Archivos y carpetas de tracking/experimentos
+wandb/
+output/
+*.ckpt
+*.h5
+*.pth
+*.tflite
+
+# 🚫 Datos grandes (por seguridad y tamaño)
+*.nii
+*.nii.gz
+*.npz
+*.npy
+
+# 🚫 Jupyter y runtime
+*.ipynb~  # versiones temporales
+*.pyc
+.DS_Store
+
+# 🚫 Archivos de entorno o configuraciones personales
+.env
+*.env
+*.bat
+*.sh
+
+# 🚫 Requisitos locales
+debug-*.log
+requirements.txt.new
+
+

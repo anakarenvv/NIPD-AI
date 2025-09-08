@@ -28,6 +28,9 @@ from collections import Counter
 import random
 
 
+# === RUTAS BASE LOCALES ===
+RAW_ROOT    = r"F:/rawdata/"
+RABIES_ROOT = r"F:/rabies/"
 
 class FILES_and_LABELS():
     def __init__(self, subjects, sessions, MRI_type, functional_type):
@@ -67,7 +70,10 @@ class FILES_and_LABELS():
         #FMRI_type -> func o anat
         files = []
         label_files = []
-        rootpath = "C:/Users/"+os.getlogin()+"/OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey/rawdata/"
+        
+        rootpath = RAW_ROOT
+
+        #rootpath = "C:/Users/"+os.getlogin()+"/OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey/rawdata/"
         #label_table = pd.read_table(rootpath + '/participants.tsv', encoding='utf-8')
         for subj in self.subjects:
             for sess in self.sess:
@@ -83,78 +89,65 @@ class FILES_and_LABELS():
         return files, label_files
     
     def get_mask_and_bold(self):
+        # Funcional_type -> rest o dist
+        # FMRI_type -> func o anat
         files = []
-        #p = "C:/Users/"+os.getlogin()+"/OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey/"
-        if self.functional_type == "rest":
-            if os.getlogin() == "damia":
-                for i in self.sessions:
-                    for j in self.sub:
-                        if j <= 68:
-                            #image = p+"rabies/preprocess_batch-001_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                            #mask =  p+"rabies/preprocess_batch-001_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            mask =  "E:/rabies/preprocess_batch-001_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            image = "E:/rabies/preprocess_batch-001_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                            files.append([image,mask])
-                        elif j > 68 and j <= 135:
-                            #image = p+"rabies/preprocess_batch-002_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                            #mask =  p+"rabies/preprocess_batch-002_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            mask =  "E:/rabies/preprocess_batch-002_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            image = "E:/rabies/preprocess_batch-002_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                            files.append([image,mask])
-            elif os.getlogin() == "gdaalumno":
-                for i in self.sessions:
-                    for j in self.sub:
-                        if j <= 68:
-                            #image = p+"rabies/preprocess_batch-001_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                            #mask =  p+"rabies/preprocess_batch-001_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            mask =  "C:/Users/gdaalumno/Desktop/rabies/preprocess_batch-001_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            image = "C:/Users/gdaalumno/Desktop/rabies/preprocess_batch-001_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                            files.append([image,mask])
-                        elif j > 68 and j <= 135:
-                            if j == 124 and i == 3:
-                                continue
-                            else:
-                                #image = p+"rabies/preprocess_batch-002_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                                #mask =  p+"rabies/preprocess_batch-002_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                                mask =  "C:/Users/gdaalumno/Desktop/rabies/preprocess_batch-002_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                                image = "C:/Users/gdaalumno/Desktop/rabies/preprocess_batch-002_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                                files.append([image,mask])
-        elif self.functional_type == "dist":
-            if os.getlogin() == "damia":
-                for i in self.sessions:
-                    for j in self.sub:
-                        if j <= 68:
-                            #image = p+"rabies/preprocess_batch-001_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                            #mask =  p+"rabies/preprocess_batch-001_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            mask =  "E:/rabies/preprocess_batch-001_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            image = "E:/rabies/preprocess_batch-001/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-dist_desc-oa_bold_autobox_combined.nii.gz"
-                            files.append([image,mask])
-                        elif j > 68 and j <= 135:
-                            #image = p+"rabies/preprocess_batch-002_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                            #mask =  p+"rabies/preprocess_batch-002_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            mask =  "E:/rabies/preprocess_batch-002_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            image = "E:/rabies/preprocess_batch-002/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-dist_desc-oa_bold_autobox_combined.nii.gz"
-                            files.append([image,mask])
-            elif os.getlogin() == "gdaalumno":
-                for i in self.sessions:
-                    for j in self.sub:
-                        if j <= 68:
-                            #image = p+"rabies/preprocess_batch-001_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                            #mask =  p+"rabies/preprocess_batch-001_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            mask =  "C:/Users/gdaalumno/Desktop/rabies/preprocess_batch-001_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                            image = "C:/Users/gdaalumno/Desktop/rabies/preprocess_batch-001/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-dist_desc-oa_bold_autobox_combined.nii.gz"
-                            files.append([image,mask])
-                        elif j > 68 and j <= 135:
-                            if j == 124 and i == 3:
-                                continue
-                            else:
-                                #image = p+"rabies/preprocess_batch-002_rest/bold_datasink/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_combined.nii.gz"
-                                #mask =  p+"rabies/preprocess_batch-002_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                                mask =  "C:/Users/gdaalumno/Desktop/rabies/preprocess_batch-002_rest/bold_datasink/commonspace_mask/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
-                                image = "C:/Users/gdaalumno/Desktop/rabies/preprocess_batch-002/commonspace_bold/_scan_info_subject_id"+str.zfill(str(j), 3)+".session"+str.zfill(str(i), 2)+"_split_name_sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_desc-o_T2w/_run_None/sub-"+str.zfill(str(j), 3)+"_ses-"+str.zfill(str(i), 2)+"_task-dist_desc-oa_bold_autobox_combined.nii.gz"
-                                files.append([image,mask])
-                        
-        return files 
+
+        def batch_str(sub_id_int):
+            return "001" if sub_id_int <= 68 else "002"
+
+        for i in self.sessions:  # i = sesión (int)
+            for j in self.sub:   # j = sujeto (int)
+                b = batch_str(j)
+
+                common = (
+                    f"_scan_info_subject_id{str(j).zfill(3)}"
+                    f".session{str(i).zfill(2)}"
+                    f"_split_name_sub-{str(j).zfill(3)}"
+                    f"_ses-{str(i).zfill(2)}"
+                    f"_desc-o_T2w/_run_None/"
+                    f"sub-{str(j).zfill(3)}_ses-{str(i).zfill(2)}"
+                )
+
+                if self.functional_type == "rest":
+                    mask = (
+                        RABIES_ROOT
+                        + f"preprocess_batch-{b}_rest/"
+                        "bold_datasink/commonspace_mask/"
+                        + common
+                        + "_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
+                    )
+                    image = (
+                        RABIES_ROOT
+                        + f"preprocess_batch-{b}_rest/"
+                        "bold_datasink/commonspace_bold/"
+                        + common
+                        + "_task-rest_desc-oa_bold_autobox_combined.nii.gz"
+                    )
+                elif self.functional_type == "dist":
+                    mask = (
+                        RABIES_ROOT
+                        + f"preprocess_batch-{b}_rest/"
+                        "bold_datasink/commonspace_mask/"
+                        + common
+                        + "_task-rest_desc-oa_bold_autobox_EPI_brain_mask.nii.gz"
+                    )
+                    image = (
+                        RABIES_ROOT
+                        + f"preprocess_batch-{b}/"
+                        "commonspace_bold/"
+                        + common
+                        + "_task-dist_desc-oa_bold_autobox_combined.nii.gz"
+                    )
+                else:
+                    continue
+
+                if os.path.exists(image) and os.path.exists(mask):
+                    files.append([image, mask])
+
+        return files  # ← ahora correctamente indentado
+
+
     
 class CustomDataGen(tf.keras.utils.Sequence):
     def __init__(self, df,
@@ -174,10 +167,13 @@ class CustomDataGen(tf.keras.utils.Sequence):
         self.batch_size = batch_size
         self.input_size = input_size
         self.shuffle = shuffle
-        if os.getlogin() == "damia":
-            self.path = "E:/rawdata/"
-        else:
-            self.path =  "C:/Users/"+os.getlogin()+"/OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey/rawdata/"
+
+        self.path = RAW_ROOT
+
+        #if os.getlogin() == "damia":
+        #    self.path = "E:/rawdata/"
+        #else:
+        #    self.path =  "C:/Users/"+os.getlogin()+"/OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey/rawdata/"
         self.n = len(self.df)
         self.format = format
         self.vols = vols
