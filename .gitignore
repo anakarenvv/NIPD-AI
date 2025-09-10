@@ -33,4 +33,13 @@ output/
 debug-*.log
 requirements.txt.new
 
+#
+saved_model.pb
+variables.data-*
+variables.index
+keras_metadata.pb
+
+*.mp4
+*.npy
+/wandb/
 
