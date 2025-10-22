@@ -1511,4 +1511,3 @@ def collate_fn_torch(batch):
 
 
     return sub_batches, sub_labels
-
