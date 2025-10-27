@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed May 15 11:23:53 2024
-
-@author: damia
-"""
+#agregar tf.data 
 from torch.utils.data import Dataset, DataLoader, Sampler
 import torch
 import tensorflow as tf

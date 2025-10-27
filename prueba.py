@@ -1,28 +1,26 @@
-from my_data_generator import FILES_and_LABELS, CustomDataGen
+import tensorflow as tf
+from tensorflow.data.experimental import service
 
-# Lista de sujetos (ajusta según los que tengas)
-subjects = list(range(1, 6))     # sub-001 a sub-005
-sessions = [1]                   # solo ses-01 para probar
+# Paso 1: Crear un dataset simple
+def preprocess(x):
+    tf.print("Procesando:", x)
+    return x * x
 
-# Cargar archivos .nii desde F:/rawdata/
-fl = FILES_and_LABELS(subjects, sessions, MRI_type='func', functional_type='rest')
-files_rel, labels = fl.get_ID_filenames()
+dataset = tf.data.Dataset.range(10).map(preprocess)
 
-print("Número de ejemplos encontrados:", len(files_rel))
-print("Primer archivo relativo:", files_rel[0])
+# Paso 2: Iniciar el servicio (dispatcher + worker)
+dispatcher = service.start_dispatch_server()
+worker = service.start_worker_server(dispatcher_address=dispatcher.target)
 
-# Crear el generador de datos
-gen = CustomDataGen(df=files_rel,
-                    batch_size=1,
-                    subbatch_size=30,
-                    format="vol",          # puedes probar también con "rgb" o "grayscale"
-                    classes="sessions",
-                    num_class=3,
-                    vols=30,
-                    functional_type="rest")
+# Paso 3: Aplicar distribución del dataset
+distributed_dataset = dataset.apply(
+    tf.data.experimental.service.distribute(
+        processing_mode="parallel_epochs",
+        service=dispatcher.target
+    )
+)
 
-# Probar primer subbatch
-X, y = gen[0]
+# Paso 4: Iterar para probar
+for item in distributed_dataset:
+    print("Resultado:", item.numpy())
 
-print("Forma de X:", X.shape)
-print("Forma de y:", y.shape)
